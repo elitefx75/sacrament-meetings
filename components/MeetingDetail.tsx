@@ -1,0 +1,13 @@
+"use client";
+
+import Link from "next/link";
+import type { SacramentMeeting } from "../lib/types";
+
+export default function MeetingDetail({ meeting }: { meeting: SacramentMeeting }) {
+    const date = new Date(`${meeting.date}T12:00:00`).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+    return <><header className="border-b border-[var(--color-line)] pb-8"><p className="text-xs font-bold uppercase tracking-[.14em] text-[var(--color-accent)]">{meeting.meetingType} sacrament meeting</p><h1 className="mt-2 font-serif text-5xl font-medium leading-none">{date}</h1><p className="mt-4 text-[var(--color-muted)]">Presiding: {meeting.presiding} · Conducting: {meeting.conducting}</p></header><div className="mt-8 grid"><AgendaRow label="Opening hymn" value={`#${meeting.openingHymn.number} - ${meeting.openingHymn.title}`} /><AgendaRow label="Opening prayer" value={meeting.openingPrayer} /><AgendaRow label="Ward business" value={meeting.wardBusiness.map((item) => item.description).join("; ")} /><AgendaRow label="Stake business" value={meeting.stakeBusiness ? "Stake business included" : "None"} /><AgendaRow label="Sacrament hymn" value={`#${meeting.sacramentHymn.number} - ${meeting.sacramentHymn.title}`} /><AgendaRow label="Speakers and musical numbers" value={meeting.speakers.map((item) => item.topic ? `${item.name}: ${item.topic}` : item.name).join("; ")} /><AgendaRow label="Closing hymn" value={`#${meeting.closingHymn.number} - ${meeting.closingHymn.title}`} /><AgendaRow label="Closing prayer" value={meeting.closingPrayer} />{meeting.announcements?.length ? <AgendaRow label="Announcements" value={meeting.announcements.join("; ")} /> : null}</div><div className="mt-8 flex justify-between gap-4"><Link className="font-bold text-[var(--color-accent)]" href="/meetings">&lt;- All meetings</Link><button className="bg-[var(--color-accent)] px-5 py-3 font-bold text-white hover:bg-[var(--color-accent-dark)]" type="button" onClick={() => window.print()}>Print agenda</button></div></>;
+}
+
+function AgendaRow({ label, value }: { label: string; value: string }) {
+    return <div className="grid gap-2 border-b border-[var(--color-line)] py-5 sm:grid-cols-[minmax(8rem,.7fr)_2fr] sm:gap-4"><div className="text-xs font-bold uppercase tracking-[.1em] text-[var(--color-accent)]">{label}</div><p className="m-0 leading-relaxed">{value}</p></div>;
+}
