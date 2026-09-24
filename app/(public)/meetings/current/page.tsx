@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
-import { getMeetings } from "../../../lib/meetings-db";
+import { getMeetings } from "../../../../lib/meetings-db";
 
 export const dynamic = "force-dynamic";
 
-export default function CurrentMeetingPage() {
+export default async function CurrentMeetingPage() {
     const today = new Date();
     const sunday = new Date(today);
     sunday.setDate(today.getDate() - today.getDay());
@@ -13,7 +13,7 @@ export default function CurrentMeetingPage() {
         String(sunday.getMonth() + 1).padStart(2, "0"),
         String(sunday.getDate()).padStart(2, "0"),
     ].join("-");
-    const currentMeeting = getMeetings(sundayIso)[0];
+    const currentMeeting = (await getMeetings(sundayIso))[0];
 
     redirect(currentMeeting ? `/meetings/${currentMeeting.id}` : "/meetings");
 }
