@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cedar Ridge Ward | Sacrament Meetings",
+  title: "Cedar Ridge Ward | Meetings",
   description: "A clear weekly record of Cedar Ridge Ward sacrament meetings.",
 };
 
