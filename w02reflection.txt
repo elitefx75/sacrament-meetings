@@ -1,0 +1,16 @@
+ architectural or component decision
+ I chose to split the meeting agenda into reusable components 
+ inside MeetingDetail, such as AgendaRow, AgendaList, and SpeakerList,
+instead of placing all of the markup directly in the page. I considered 
+creating one large component or using a generic configuration-driven renderer, 
+but smaller purpose-specific components were clearer and easier to maintain while 
+still avoiding repeated layout code. This also made it easier to handle different 
+data types, such as single values, lists, and speakers, consistently.
+
+chalenges
+commiting the branch to vercel
+comparing the codes with the team member 
+
+AI usage
+used ai to get a clear global css
+sed ai to gve a neat front organisation to the page
