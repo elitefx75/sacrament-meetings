@@ -1,0 +1,17 @@
+This week I added create, edit, and delete actions for sacrament meetings and
+connected them to the Neon database. One challenge was matching the SQL writes
+to the existing schema, announcements are stored as a PostgreSQL text array,
+while hymns, speakers, and ward business use JSONB. An initial live create check
+revealed that mismatch, so I checked the database column types and adjusted the
+parameterized SQL to build the text array correctly.
+
+I also added Zod validation and used React's useActionState to return field-level
+errors to the create and edit forms. Making every error accessible required
+matching each field with its label, ID, and live error region, and preserving
+entered values after an invalid submission.
+
+I used AI to review the course's Server Action pattern, help implement the
+database and form changes, and diagnose the schema mismatch found during browser
+testing. I then verified invalid and valid submissions, checked that errors
+appeared and cleared correctly, and ran lint, TypeScript, and production build
+checks.
