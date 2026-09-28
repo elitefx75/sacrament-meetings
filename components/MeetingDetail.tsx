@@ -24,7 +24,10 @@ export default function MeetingDetail({ meeting }: { meeting: SacramentMeeting }
         </div>
         <div className="mt-8 flex justify-between gap-4 print-hidden">
             <Link className="font-bold text-[var(--color-accent)]" href="/meetings">&lt;- All meetings</Link>
-            <button className="bg-[var(--color-accent)] px-5 py-3 font-bold text-white hover:bg-[var(--color-accent-dark)]" type="button" onClick={() => window.print()}>Print agenda</button>
+            <div className="flex gap-4">
+                <Link className="border border-[var(--color-line)] px-5 py-3 font-bold text-[var(--color-ink)] hover:border-[var(--color-accent)]" href={`/meetings/${meeting.id}/edit`}>Edit meeting</Link>
+                <button className="bg-[var(--color-accent)] px-5 py-3 font-bold text-white hover:bg-[var(--color-accent-dark)]" type="button" onClick={() => window.print()}>Print agenda</button>
+            </div>
         </div>
     </>;
 }
