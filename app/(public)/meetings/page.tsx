@@ -1,8 +1,14 @@
+import type { Metadata } from 'next';
 import { getMeetings, getMeetingsTotalPages } from '@/lib/meetings-db';
 import { MeetingSearch } from '@/components/MeetingSearch';
 import MeetingCard from '@/components/MeetingCard';
 import { Pagination } from '@/components/Pagination';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+    title: 'Meeting Agendas',
+    description: 'Browse and search Cedar Ridge Ward sacrament meeting agendas.',
+};
 
 export default async function MeetingsPage(props: {
     searchParams?: Promise<{ query?: string; page?: string }>;

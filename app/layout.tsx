@@ -15,8 +15,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cedar Ridge Ward | Meetings",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  ),
+  title: {
+    default: "Cedar Ridge Ward Meetings",
+    template: "%s | Cedar Ridge Ward",
+  },
   description: "A clear weekly record of Cedar Ridge Ward sacrament meetings.",
+  openGraph: {
+    type: "website",
+    siteName: "Cedar Ridge Ward",
+    title: "Cedar Ridge Ward Meetings",
+    description: "A clear weekly record of Cedar Ridge Ward sacrament meetings.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Cedar Ridge Ward Meetings",
+    description: "A clear weekly record of Cedar Ridge Ward sacrament meetings.",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

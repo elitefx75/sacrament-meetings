@@ -2,7 +2,9 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { AuthError } from 'next-auth';
 import { z } from 'zod';
+import { auth, signIn } from '@/auth';
 import {
     addMeeting,
     deleteMeeting as deleteMeetingRecord,
@@ -95,7 +97,38 @@ function toMeetingData(data: z.output<typeof MeetingFormSchema>) {
     };
 }
 
+async function requireAuthenticatedUser() {
+    const session = await auth();
+    if (!session?.user) {
+        throw new Error('You must be signed in to manage meetings.');
+    }
+}
+
+export async function authenticate(
+    _prevState: string | undefined,
+    formData: FormData,
+): Promise<string | undefined> {
+    try {
+        await signIn('credentials', {
+            email: String(formData.get('email') ?? ''),
+            password: String(formData.get('password') ?? ''),
+            redirectTo: '/meetings/new',
+        });
+    } catch (error) {
+        if (error instanceof AuthError) {
+            switch (error.type) {
+                case 'CredentialsSignin':
+                    return 'Invalid email or password.';
+                default:
+                    return 'Something went wrong while signing in.';
+            }
+        }
+        throw error;
+    }
+}
+
 export async function createMeeting(_prevState: MeetingActionState, formData: FormData): Promise<MeetingActionState> {
+    await requireAuthenticatedUser();
     const parsed = MeetingFormSchema.safeParse(getRawMeetingFormData(formData));
     if (!parsed.success) {
         return {
@@ -110,6 +143,7 @@ export async function createMeeting(_prevState: MeetingActionState, formData: Fo
 }
 
 export async function updateMeeting(id: number, _prevState: MeetingActionState, formData: FormData): Promise<MeetingActionState> {
+    await requireAuthenticatedUser();
     const parsed = MeetingFormSchema.safeParse(getRawMeetingFormData(formData));
     if (!parsed.success) {
         return {
@@ -125,6 +159,7 @@ export async function updateMeeting(id: number, _prevState: MeetingActionState, 
 }
 
 export async function deleteMeeting(formData: FormData) {
+    await requireAuthenticatedUser();
     const id = z.coerce.number().int().positive().safeParse(formData.get('id'));
     if (!id.success) throw new Error('Invalid meeting ID.');
 
