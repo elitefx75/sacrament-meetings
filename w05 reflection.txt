@@ -1,0 +1,15 @@
+This week I added authentication for the ward administrator. The create-meeting
+route and meeting edit routes are protected, while public meeting pages remain
+available without signing in. I also added site metadata, including a default
+title and title template, a description, and Open Graph and Twitter metadata
+for sharing.
+
+One challenge was protecting only the management routes without blocking
+public access to meetings. I resolved this in the NextAuth authorization
+callback by matching the create route and meeting edit paths, and redirecting
+signed-in users away from the login page.
+
+I used AI to help understand and implement the authentication and metadata
+patterns, and to review the route protection logic. I checked the resulting
+configuration against the application routes to make sure public meeting pages
+were still accessible.
